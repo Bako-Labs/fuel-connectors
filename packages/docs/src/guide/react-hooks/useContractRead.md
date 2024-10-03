@@ -13,7 +13,7 @@ The properties of the hook.
 #### Returns
 
 An object containing:
-- `contractRead`: The result of the contract function call.
+- The result of the contract function call.
 - [`...queryProps`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery): Destructured properties from `useQuery` result.
 
 #### Examples
@@ -29,6 +29,6 @@ console.log(data);
 ```
 
 #### Defined in
-[packages/react/src/hooks/useContractRead.ts:66](https://github.com/fuellabs/fuel-connectors/blob/main/packages/react/src/hooks/useContractRead.ts#L66)
+[packages/react/src/hooks/useContractRead.ts:63](https://github.com/fuellabs/fuel-connectors/blob/main/packages/react/src/hooks/useContractRead.ts#L63)
 
 ___

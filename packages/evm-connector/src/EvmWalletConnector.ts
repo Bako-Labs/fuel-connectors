@@ -3,6 +3,7 @@ import { hexToBytes } from '@ethereumjs/util';
 import { hexlify, splitSignature } from '@ethersproject/bytes';
 
 import {
+  CHAIN_IDS,
   type ConnectorMetadata,
   FuelConnectorEventType,
   FuelConnectorEventTypes,
@@ -20,9 +21,10 @@ import {
   type ProviderDictionary,
   getMockedSignatureIndex,
   getOrThrow,
+  getProviderUrl,
 } from '@fuel-connectors/common';
+import { PREDICATE_VERSIONS } from '@fuel-connectors/evm-predicates';
 import { METAMASK_ICON, TESTNET_URL, WINDOW } from './constants';
-import { PREDICATE_VERSIONS } from './generated/predicates';
 import {
   type EIP1193Provider,
   type EVMWalletConnectorConfig,
@@ -131,8 +133,9 @@ export class EVMWalletConnector extends PredicateConnector {
   protected requireConnection(): MaybeAsync<void> {}
 
   protected async configProviders(config: EVMWalletConnectorConfig = {}) {
+    const network = getProviderUrl(config.chainId ?? CHAIN_IDS.fuel.testnet);
     this.config = Object.assign(config, {
-      fuelProvider: config.fuelProvider || Provider.create(TESTNET_URL),
+      fuelProvider: config.fuelProvider || Provider.create(network),
       ethProvider: config.ethProvider || WINDOW?.ethereum,
     });
   }

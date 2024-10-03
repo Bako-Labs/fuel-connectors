@@ -1,12 +1,15 @@
+import { getProviderUrl } from '@fuel-connectors/common';
 import {
   type AbiMap,
   type Asset,
+  CHAIN_IDS,
   type ConnectorMetadata,
   FuelConnector,
   FuelConnectorEventTypes,
   type JsonAbi,
   type Network,
   Provider,
+  type SelectNetworkArguments,
   type StorageAbstract,
   type TransactionRequestLike,
   type Version,
@@ -19,7 +22,7 @@ import {
   BURNER_WALLET_ICON,
   BURNER_WALLET_PRIVATE_KEY,
   BURNER_WALLET_STATUS,
-  TESTNET_URL,
+  HAS_WINDOW,
 } from './constants';
 import type { BurnerWalletConfig } from './types';
 
@@ -28,6 +31,7 @@ export class BurnerWalletConnector extends FuelConnector {
 
   connected = false;
   installed = true;
+  external = false;
 
   events = FuelConnectorEventTypes;
 
@@ -49,12 +53,15 @@ export class BurnerWalletConnector extends FuelConnector {
     super();
 
     this.storage = this.getStorage(config.storage);
-    this.configProvider(config);
+    if (HAS_WINDOW) {
+      this.configProvider(config);
+    }
   }
 
   private configProvider(config: BurnerWalletConfig = {}) {
+    const network = getProviderUrl(config.chainId ?? CHAIN_IDS.fuel.testnet);
     this.config = Object.assign(config, {
-      fuelProvider: config.fuelProvider || Provider.create(TESTNET_URL),
+      fuelProvider: config.fuelProvider || Provider.create(network),
     });
   }
 
@@ -247,7 +254,7 @@ export class BurnerWalletConnector extends FuelConnector {
     throw new Error('Method not implemented.');
   }
 
-  async selectNetwork(_network: Network): Promise<boolean> {
+  async selectNetwork(_network: SelectNetworkArguments): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
 

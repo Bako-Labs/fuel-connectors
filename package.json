@@ -8,6 +8,9 @@
   "scripts": {
     "build": "turbo build",
     "build:docs": "turbo run build --filter=docs",
+    "fuels:build": "turbo run fuels:build && pnpm format",
+    "dev:examples:react": "turbo run dev --filter=react-app",
+    "dev:examples:next": "turbo run dev --filter=react-next",
     "dev:docs": "turbo run dev --filter=docs",
     "build:watch": "turbo build:watch",
     "ts:check": "turbo run ts:check",
@@ -37,7 +40,7 @@
   },
   "engines": {
     "node": ">=18",
-    "pnpm": ">=8"
+    "pnpm": ">=9"
   },
   "pnpm": {
     "overrides": {
@@ -48,5 +51,5 @@
       "fast-xml-parser@<4.4.1": ">=4.4.1"
     }
   },
-  "packageManager": "pnpm@8.15.7"
+  "packageManager": "pnpm@9.5.0"
 }

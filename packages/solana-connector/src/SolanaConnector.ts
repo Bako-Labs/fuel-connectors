@@ -1,4 +1,3 @@
-import { hexToBytes } from '@ethereumjs/util';
 import {
   type Maybe,
   PredicateConnector,
@@ -8,19 +7,22 @@ import {
   SolanaWalletAdapter,
   getMockedSignatureIndex,
   getOrThrow,
+  getProviderUrl,
 } from '@fuel-connectors/common';
 import { ApiController } from '@web3modal/core';
 import type { Web3Modal } from '@web3modal/solana';
 import type { Provider } from '@web3modal/solana/dist/types/src/utils/scaffold';
 import {
+  CHAIN_IDS,
   type ConnectorMetadata,
   FuelConnectorEventTypes,
   Provider as FuelProvider,
   type TransactionRequestLike,
 } from 'fuels';
-import { SOLANA_ICON, TESTNET_URL } from './constants';
+import { HAS_WINDOW, SOLANA_ICON, TESTNET_URL } from './constants';
 import { PREDICATE_VERSIONS } from './generated/predicates';
 import type { SolanaConfig } from './types';
+import { type SolanaPredicateRoot, txIdEncoders } from './utils';
 import { createSolanaConfig, createSolanaWeb3ModalInstance } from './web3Modal';
 
 export class SolanaConnector extends PredicateConnector {
@@ -44,7 +46,9 @@ export class SolanaConnector extends PredicateConnector {
   constructor(config: SolanaConfig) {
     super();
     this.customPredicate = config.predicateConfig || null;
-    this.configProviders(config);
+    if (HAS_WINDOW) {
+      this.configProviders(config);
+    }
   }
 
   private async _emitConnected(connected: boolean) {
@@ -76,7 +80,8 @@ export class SolanaConnector extends PredicateConnector {
   }
 
   private providerFactory(config?: SolanaConfig) {
-    return config?.fuelProvider || FuelProvider.create(TESTNET_URL);
+    const network = getProviderUrl(config?.chainId ?? CHAIN_IDS.fuel.testnet);
+    return config?.fuelProvider || FuelProvider.create(network);
   }
 
   // Solana Web3Modal is Canary and not yet stable
@@ -145,8 +150,9 @@ export class SolanaConnector extends PredicateConnector {
   }
 
   protected async configProviders(config: SolanaConfig = {}) {
+    const network = getProviderUrl(config.chainId ?? CHAIN_IDS.fuel.testnet);
     this.config = Object.assign(config, {
-      fuelProvider: config.fuelProvider || FuelProvider.create(TESTNET_URL),
+      fuelProvider: config.fuelProvider || FuelProvider.create(network),
     });
   }
 
@@ -214,10 +220,19 @@ export class SolanaConnector extends PredicateConnector {
     return this.isConnected();
   }
 
-  public truncateTxId(txId: string): Uint8Array {
-    const txIdNo0x = txId.slice(2);
-    const idBytes = `${txIdNo0x.slice(0, 16)}${txIdNo0x.slice(-16)}`;
-    return new TextEncoder().encode(idBytes);
+  private isValidPredicateAddress(
+    address: string,
+  ): address is SolanaPredicateRoot {
+    return address in txIdEncoders;
+  }
+
+  private async encodeTxId(txId: string): Promise<Uint8Array> {
+    if (!this.isValidPredicateAddress(this.predicateAddress)) {
+      throw new Error(`Unknown predicate address ${this.predicateAddress}`);
+    }
+
+    const encoder = txIdEncoders[this.predicateAddress];
+    return encoder.encodeTxId(txId);
   }
 
   public async sendTransaction(
@@ -230,7 +245,8 @@ export class SolanaConnector extends PredicateConnector {
     const predicateSignatureIndex = getMockedSignatureIndex(
       transactionRequest.witnesses,
     );
-    const txId = this.truncateTxId(transactionId);
+
+    const txId = await this.encodeTxId(transactionId);
     const provider: Maybe<Provider> =
       this.web3Modal.getWalletProvider() as Provider;
     if (!provider) {

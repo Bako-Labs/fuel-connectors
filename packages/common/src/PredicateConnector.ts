@@ -8,9 +8,8 @@ import {
   FuelConnectorEventTypes,
   type JsonAbi,
   type Network,
-  OutputType,
+  type SelectNetworkArguments,
   type TransactionRequestLike,
-  TransactionResponse,
   type Version,
   ZeroBytes32,
   bn,
@@ -34,11 +33,13 @@ import type {
 export abstract class PredicateConnector extends FuelConnector {
   public connected = false;
   public installed = false;
+  external = true;
   public events = FuelConnectorEventTypes;
   protected predicateAddress!: string;
   protected customPredicate: Maybe<PredicateConfig>;
   protected predicateAccount: Maybe<PredicateFactory> = null;
   protected subscriptions: Array<() => void> = [];
+  protected hasProviderSucceeded = true;
 
   private _predicateVersions!: Array<PredicateFactory>;
 
@@ -56,7 +57,7 @@ export abstract class PredicateConnector extends FuelConnector {
   protected abstract getWalletAdapter(): PredicateWalletAdapter;
   protected abstract getPredicateVersions(): Record<string, PredicateVersion>;
   protected abstract getAccountAddress(): MaybeAsync<Maybe<string>>;
-  protected abstract getProviders(): MaybeAsync<ProviderDictionary>;
+  protected abstract getProviders(): Promise<ProviderDictionary>;
   protected abstract requireConnection(): MaybeAsync<void>;
   protected abstract walletAccounts(): Promise<Array<string>>;
 
@@ -249,8 +250,14 @@ export abstract class PredicateConnector extends FuelConnector {
   }
 
   public async ping(): Promise<boolean> {
-    await this.getProviders();
-    return true;
+    this.getProviders()
+      .catch(() => {
+        this.hasProviderSucceeded = false;
+      })
+      .then(() => {
+        this.hasProviderSucceeded = true;
+      });
+    return this.hasProviderSucceeded;
   }
 
   public async version(): Promise<Version> {
@@ -318,7 +325,9 @@ export abstract class PredicateConnector extends FuelConnector {
     throw new Error('Method not implemented.');
   }
 
-  public async selectNetwork(_network: Network): Promise<boolean> {
+  public async selectNetwork(
+    _network: SelectNetworkArguments,
+  ): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
 

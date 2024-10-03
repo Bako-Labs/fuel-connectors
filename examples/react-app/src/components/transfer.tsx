@@ -1,4 +1,4 @@
-import { Address, Provider } from 'fuels';
+import { Address } from 'fuels';
 import { useState } from 'react';
 import { useWallet } from '../hooks/useWallet';
 import type { CustomError } from '../utils/customError';
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function Transfer({ isSigning, setIsSigning }: Props) {
-  const { balance, wallet, refetchWallet } = useWallet();
+  const { balance, wallet, refetchBalance } = useWallet();
 
   const [receiver, setReceiver] = useState(DEFAULT_ADDRESS);
   const [isLoading, setLoading] = useState(false);
@@ -40,10 +40,6 @@ export default function Transfer({ isSigning, setIsSigning }: Props) {
         receiverAddress,
         DEFAULT_AMOUNT,
         asset_id,
-        {
-          gasLimit: 150_000,
-          maxFee: 150_000,
-        },
       );
 
       setToast({
@@ -54,34 +50,34 @@ export default function Transfer({ isSigning, setIsSigning }: Props) {
 
       // after 3 seconds we'll check if transaction is done
       const TIME_TO_WAIT = 3000;
-      setTimeout(() => {
-        // execute this inside timeout to avoid block the user flow
-        async function checkResult() {
-          if (wallet) {
-            const result = await resp?.waitForResult();
-
-            setToast({
-              open: true,
-              type: 'success',
-              children: (
-                <p>
-                  Transferred successfully! View it on the{' '}
-                  <a
-                    href={`https://app.fuel.network/tx/${result.id}`}
-                    className="underline"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    block explorer
-                  </a>
-                </p>
-              ),
-            });
-          }
-        }
-
+      const checkTimeout = setTimeout(() => {
         checkResult();
       }, TIME_TO_WAIT);
+
+      async function checkResult() {
+        const result = await resp?.waitForResult();
+        refetchBalance();
+        setLoading(false);
+        setIsSigning(false);
+        setToast({
+          open: true,
+          type: 'success',
+          children: (
+            <p>
+              Transferred successfully! View it on the{' '}
+              <a
+                href={`https://app.fuel.network/tx/${result?.id}`}
+                className="underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                block explorer
+              </a>
+            </p>
+          ),
+        });
+        clearInterval(checkTimeout);
+      }
     } catch (err) {
       const error = err as CustomError;
       console.error(error.message);
@@ -95,10 +91,9 @@ export default function Transfer({ isSigning, setIsSigning }: Props) {
             : error.message.substring(0, 32)
         }...`,
       });
-    } finally {
+
       setLoading(false);
       setIsSigning(false);
-      refetchWallet();
     }
   };
 

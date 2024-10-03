@@ -9,6 +9,7 @@ import {
   FuelConnectorEventTypes,
   type Network,
   Provider,
+  type SelectNetworkArguments,
   type TransactionRequestLike,
   type Version,
   transactionRequestify,
@@ -32,6 +33,7 @@ export class FuelWalletConnector extends FuelConnector {
   name = '';
   connected = false;
   installed = false;
+  external = false;
   events = FuelConnectorEventTypes;
   metadata: ConnectorMetadata = {
     image: '/connectors/fuel-wallet.svg',
@@ -267,8 +269,10 @@ export class FuelWalletConnector extends FuelConnector {
     return this.client.request('network', {});
   }
 
-  async selectNetwork(_network: Network): Promise<boolean> {
-    throw new Error('Method not implemented.');
+  async selectNetwork(network: SelectNetworkArguments): Promise<boolean> {
+    return this.client.request('selectNetwork', {
+      network,
+    });
   }
 
   async networks(): Promise<Network[]> {

@@ -2,7 +2,7 @@ import { bn } from 'fuels';
 import { useState } from 'react';
 import { useLogEvents } from '../hooks/use-log-events';
 import { useWallet } from '../hooks/useWallet';
-import { NativeAssetContractAbi__factory } from '../types';
+import { NativeAssetContract } from '../types';
 import { nativeAssetContract as TOKEN_CONTRACT_ID } from '../types/contract-ids.json';
 import type { CustomError } from '../utils/customError';
 import { DEFAULT_AMOUNT } from './balance';
@@ -39,7 +39,7 @@ export default function MinterCounter({ isSigning, setIsSigning }: Props) {
       setLoading(true);
       setIsSigning(true);
       try {
-        const contract = await NativeAssetContractAbi__factory.connect(
+        const contract = new  NativeAssetContract(
           TOKEN_CONTRACT_ID,
           wallet,
         );

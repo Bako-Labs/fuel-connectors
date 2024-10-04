@@ -1,9 +1,8 @@
-import { bn } from 'fuels';
+import {bn, CHAIN_IDS} from 'fuels';
 import { useState } from 'react';
 import { useLogEvents } from '../hooks/use-log-events';
 import { useWallet } from '../hooks/useWallet';
 import { NativeAssetContract } from '../types';
-import { nativeAssetContract as TOKEN_CONTRACT_ID } from '../types/contract-ids.json';
 import type { CustomError } from '../utils/customError';
 import { DEFAULT_AMOUNT } from './balance';
 import Button from './button';
@@ -20,6 +19,11 @@ const BAKO_TOKEN_SUB_ID =
   '0x0000000000000000000000000000000000000000000000000000000000000000';
 const UNKNOWN_TOKEN_SUB_ID =
   '0x0000000000000000000000000000000000000000000000000000000000000001';
+
+const contract_id = {
+  [CHAIN_IDS.fuel.testnet]: '0x22384bcb3aab09efc946f3c2cf6344e6342f32ee12fbf7eed4e52444b50b1198',
+  [CHAIN_IDS.fuel.mainnet]: '0xf1dd0c137edf17cb46db73e6a5674a50e94623c546de677f209aa33e4316e48e',
+}
 
 export default function MinterCounter({ isSigning, setIsSigning }: Props) {
   const { balance, wallet } = useWallet();
@@ -40,7 +44,7 @@ export default function MinterCounter({ isSigning, setIsSigning }: Props) {
       setIsSigning(true);
       try {
         const contract = new  NativeAssetContract(
-          TOKEN_CONTRACT_ID,
+          contract_id[wallet.provider.getChainId()],
           wallet,
         );
 

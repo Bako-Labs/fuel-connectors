@@ -57,6 +57,10 @@ const NETWORKS = [
     chainId: CHAIN_IDS.fuel.testnet,
     url: 'https://testnet.fuel.network/v1/graphql',
   },
+  {
+    chainId: CHAIN_IDS.fuel.mainnet,
+    url: import.meta.env.VITE_APP_FUEL_MAINNET_URL,
+  },
 ];
 
 const FUEL_CONFIG = {

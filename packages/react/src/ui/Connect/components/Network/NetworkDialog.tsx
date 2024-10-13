@@ -1,6 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
+import { Provider } from 'fuels';
 import {
   useCurrentConnector,
   useDisconnect,
+  useIsConnected,
   useSelectNetwork,
 } from '../../../../hooks';
 import { useIsSupportedNetwork } from '../../../../hooks/useIsSupportedNetwork';
@@ -18,6 +21,7 @@ import {
   Divider,
   ErrorMessage,
   Header,
+  MiddleDescription,
   OrLabel,
   Title,
 } from './styles';
@@ -32,6 +36,18 @@ export function NetworkDialog({
   const { currentConnector } = useCurrentConnector();
   const { isSupportedNetwork } = useIsSupportedNetwork();
   const { selectNetwork, isError, error, isPending } = useSelectNetwork();
+  const { isConnected } = useIsConnected();
+  const { data: chainName } = useQuery({
+    queryKey: ['chainName', networks[0]],
+    queryFn: async () => {
+      if (networks[0].url) {
+        const provider = await Provider.create(networks[0].url);
+        return provider.getChain().name;
+      }
+      return '';
+    },
+    placeholderData: '',
+  });
 
   function handleSwitch() {
     if (networks[0].chainId == null) return;
@@ -43,7 +59,11 @@ export function NetworkDialog({
   }
 
   function getErrorMessage() {
-    if (isError && error?.message === 'Method not implemented.') {
+    if (
+      isError &&
+      (error?.message === 'Method not implemented.' ||
+        error?.message === 'Method not found')
+    ) {
       return 'The selected Wallet does not support switching networks, please switch manually in your wallet.';
     }
     if (isError) {
@@ -52,8 +72,12 @@ export function NetworkDialog({
     return '';
   }
 
+  if (networks == null || !isConnected) {
+    return null;
+  }
+
   return (
-    <DialogFuel open={!isSupportedNetwork} theme={theme}>
+    <DialogFuel open={!isSupportedNetwork && !!chainName} theme={theme}>
       <DialogContent
         data-connector={!!currentConnector}
         // Disable closing when clicking outside the dialog
@@ -70,9 +94,16 @@ export function NetworkDialog({
             <Header>
               <Title>Network Switch Required</Title>
               <Description>
-                This app does not support the current connected network. Switch
-                or disconnect to continue.
+                This app does not support the current connected network.
               </Description>
+              {chainName && (
+                <>
+                  <MiddleDescription>Switch to:</MiddleDescription>
+                  <MiddleDescription>
+                    <span style={{ fontWeight: 'bold' }}>{chainName}</span>
+                  </MiddleDescription>
+                </>
+              )}
               {!!isError && <ErrorMessage>{getErrorMessage()}</ErrorMessage>}
             </Header>
             {!isPending && (

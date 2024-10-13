@@ -61,13 +61,23 @@ const descriptionStyle: React.CSSProperties = {
   fontWeight: 400,
   textAlign: 'center',
   lineHeight: '1.2em',
-  color: 'var(--fuel-color-light-gray)',
+  color: 'var(--fuel-gray-11)',
   marginBottom: '10px',
   marginTop: '10px',
 };
 
 export const Description = ({ children }: React.PropsWithChildren) => {
   return <p style={descriptionStyle}>{children}</p>;
+};
+
+const middleDescriptionStyle: React.CSSProperties = {
+  ...descriptionStyle,
+  marginBottom: '4px',
+  marginTop: '4px',
+};
+
+export const MiddleDescription = ({ children }: React.PropsWithChildren) => {
+  return <p style={middleDescriptionStyle}>{children}</p>;
 };
 
 const errorMessageStyle: React.CSSProperties = {
@@ -128,7 +138,7 @@ const orLabelStyle: React.CSSProperties = {
   fontWeight: 400,
   textAlign: 'center',
   lineHeight: 1,
-  color: 'var(--fuel-color-light-gray)',
+  color: 'var(--fuel-gray-11)',
 };
 
 export const OrLabel = ({ children }: React.PropsWithChildren) => {

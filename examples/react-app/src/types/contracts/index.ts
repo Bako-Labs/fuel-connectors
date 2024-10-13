@@ -5,10 +5,12 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.96.0
-  Forc version: 0.65.2
-  Fuel-Core version: 0.37.1
+  Fuels version: 0.94.8
+  Forc version: 0.63.6
+  Fuel-Core version: 0.35.0
 */
 
-export { Counter } from './Counter';
-export { CounterFactory } from './CounterFactory';
+export { Counter } from "./Counter";
+export { CounterFactory } from "./CounterFactory";
+export { NativeAssetContract } from "./NativeAssetContract";
+export { NativeAssetContractFactory } from "./NativeAssetContractFactory";

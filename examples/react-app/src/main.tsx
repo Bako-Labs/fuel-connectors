@@ -71,6 +71,10 @@ const NETWORKS = [
     chainId: CHAIN_ID,
     url: PROVIDER_URL,
   },
+  {
+    chainId: CHAIN_IDS.fuel.mainnet,
+    url: import.meta.env.VITE_APP_FUEL_MAINNET_URL,
+  },
 ];
 
 const FUEL_CONFIG = {

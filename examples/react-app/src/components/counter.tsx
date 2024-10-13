@@ -11,10 +11,16 @@ import Button from './button';
 import ContractLink from './contract-link';
 import Feature from './feature';
 import Notification, { type Props as NotificationProps } from './notification';
+import {CHAIN_IDS} from "fuels";
 
 interface Props {
   isSigning: boolean;
   setIsSigning: (isSigning: boolean) => void;
+}
+
+const contract_id = {
+  [CHAIN_IDS.fuel.testnet]: '0x32a71b9b4b8a3ea8ba5a551b494ef7df5ed2d238c25e5f8129d1343df1ee71f5',
+  [CHAIN_IDS.fuel.mainnet]: '0x906549b37eaeedf722c78cabf251af5c39f59624d41305dae49c6c790baa8521',
 }
 
 export default function ContractCounter({ isSigning, setIsSigning }: Props) {
@@ -64,7 +70,7 @@ export default function ContractCounter({ isSigning, setIsSigning }: Props) {
     if (wallet) {
       setLoading(true);
       setIsSigning(true);
-      const contract = new Counter(COUNTER_CONTRACT_ID, wallet);
+      const contract = new Counter(contract_id[wallet.provider.getChainId()], wallet);
       try {
         const { waitForResult } = await contract.functions
           .increment_counter()

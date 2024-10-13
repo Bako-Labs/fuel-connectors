@@ -1,7 +1,7 @@
 import type { FuelConfig } from 'fuels';
 import { Fuel } from 'fuels';
 import type { ReactNode } from 'react';
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useContext, useRef } from 'react';
 
 import type { NetworkConfig } from '../types';
 import { FuelEventsWatcher } from './FuelEventsWatcher';
@@ -34,13 +34,10 @@ export const FuelHooksProvider = ({
   fuelConfig,
   networks,
 }: FuelProviderProps) => {
-  const fuel = useMemo(() => {
-    return new Fuel(fuelConfig);
-  }, [fuelConfig]);
-
+  const fuel = useRef<Fuel>(new Fuel(fuelConfig));
   return (
-    <FuelReactContext.Provider value={{ fuel, networks }}>
-      <FuelEventsWatcher fuelConfig={fuelConfig} />
+    <FuelReactContext.Provider value={{ fuel: fuel.current, networks }}>
+      <FuelEventsWatcher />
       {children}
     </FuelReactContext.Provider>
   );

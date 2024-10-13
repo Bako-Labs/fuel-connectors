@@ -46,6 +46,7 @@ import {
   WINDOW,
 } from './constants';
 import type { WalletConnectConfig } from './types';
+import { subscribeAndEnforceChain } from './utils';
 import { createWagmiConfig, createWeb3ModalInstance } from './web3Modal';
 
 export class WalletConnectConnector extends PredicateConnector {
@@ -72,6 +73,11 @@ export class WalletConnectConnector extends PredicateConnector {
     this.storage =
       config.storage || new LocalStorage(WINDOW?.localStorage as Storage);
     const wagmiConfig = config?.wagmiConfig ?? createWagmiConfig();
+
+    if (wagmiConfig._internal.syncConnectedChain !== false) {
+      subscribeAndEnforceChain(wagmiConfig);
+    }
+
     this.customPredicate = config.predicateConfig || null;
     if (HAS_WINDOW) {
       this.configProviders({ ...config, wagmiConfig });
@@ -222,7 +228,7 @@ export class WalletConnectConnector extends PredicateConnector {
     const ethProvider = wagmiConfig
       ? ((await getAccount(
           wagmiConfig,
-        ).connector?.getProvider()) as EIP1193Provider)
+        ).connector?.getProvider?.()) as EIP1193Provider)
       : undefined;
 
     return {
@@ -333,6 +339,7 @@ export class WalletConnectConnector extends PredicateConnector {
 
       if (!ethProvider) return;
 
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       this.signAndValidate(ethProvider, address)
         .then(() => {
           clearTimeout(validationTimeout);
@@ -444,5 +451,20 @@ export class WalletConnectConnector extends PredicateConnector {
       this.disconnect();
       throw error;
     }
+  }
+
+  async signMessageCustomCurve(message: string) {
+    const { ethProvider } = await this.getProviders();
+    if (!ethProvider) throw new Error('Eth provider not found');
+    const accountAddress = await this.getAccountAddress();
+    if (!accountAddress) throw new Error('No connected accounts');
+    const signature = await ethProvider.request({
+      method: 'personal_sign',
+      params: [accountAddress, message],
+    });
+    return {
+      curve: 'secp256k1',
+      signature: signature as string,
+    };
   }
 }

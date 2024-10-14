@@ -1,10 +1,10 @@
-import {bn, CHAIN_IDS} from 'fuels';
+import {Address, bn, CHAIN_IDS} from 'fuels';
 import { useState } from 'react';
 import { useLogEvents } from '../hooks/use-log-events';
 import { useWallet } from '../hooks/useWallet';
 import { NativeAssetContract } from '../types';
 import type { CustomError } from '../utils/customError';
-import { DEFAULT_AMOUNT } from './balance';
+import { DEFAULT_AMOUNT } from '../config';
 import Button from './button';
 import ContractLink from './contract-link';
 import Feature from './feature';
@@ -121,6 +121,13 @@ export default function MinterCounter({ isSigning, setIsSigning }: Props) {
             loadingText="Minting..."
           >
             Mint Unknown Token
+          </Button>
+          <Button
+            onClick={() => wallet?.signMessage(Address.fromRandom().toB256())}
+            
+            loadingText="Signing..."
+          >
+            Sign Message
           </Button>
           <Notification
             setOpen={() => setToast({ ...toast, open: false })}

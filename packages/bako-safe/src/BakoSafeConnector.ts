@@ -163,12 +163,12 @@ export class BakoSafeConnector extends FuelConnector {
 
       //events controll
       // @ts-ignore
-      this.on(BakoSafeConnectorEvents.CLIENT_DISCONNECTED, () => {
+      this.once(BakoSafeConnectorEvents.CLIENT_DISCONNECTED, () => {
         this.dAppWindow?.close();
         reject(false);
       });
 
-      this.on(
+      this.once(
         //@ts-ignore
         BakoSafeConnectorEvents.AUTH_CONFIRMED,
         async ({ data }: { data: IResponseAuthConfirmed }) => {
@@ -182,7 +182,7 @@ export class BakoSafeConnector extends FuelConnector {
 
           this.dAppWindow?.close();
           resolve(connected);
-        },
+        }
       );
     });
   }
@@ -203,37 +203,36 @@ export class BakoSafeConnector extends FuelConnector {
       this.checkWindow();
 
       //events controll
-
-      this.on(
+      this.once(
         //@ts-ignore
         BakoSafeConnectorEvents.CLIENT_DISCONNECTED,
         () => {
           this.dAppWindow?.close();
           reject(new Error('Client disconnected'));
-        },
+        }
       );
 
       // @ts-ignore
-      this.on(BakoSafeConnectorEvents.TX_TIMEOUT, () => {
+      this.once(BakoSafeConnectorEvents.TX_TIMEOUT, () => {
         this.dAppWindow?.close();
         reject(new Error('Transaction timeout'));
       });
 
       // @ts-ignore
-      this.on(BakoSafeConnectorEvents.CLIENT_CONNECTED, () => {
+      this.once(BakoSafeConnectorEvents.CLIENT_CONNECTED, () => {
         this.socket?.server.emit(BakoSafeConnectorEvents.TX_PENDING, {
           _transaction,
           _address,
         });
       });
 
-      this.on(
+      this.once(
         // @ts-ignore
         BakoSafeConnectorEvents.TX_CONFIRMED,
         ({ data }: { data: IResponseTxCofirmed }) => {
           this.dAppWindow?.close();
           resolve(`0x${data.id}`);
-        },
+        }
       );
     });
   }

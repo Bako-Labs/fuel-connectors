@@ -1,5 +1,77 @@
 # @fuels/connectors
 
+## 0.35.0
+
+### Minor Changes
+
+- [#387](https://github.com/FuelLabs/fuel-connectors/pull/387) [`5c3d337`](https://github.com/FuelLabs/fuel-connectors/commit/5c3d3375db00b31792a05010a026ed2b74df21db) Thanks [@arboleya](https://github.com/arboleya)! - Upgrading `fuels` to `0.96.0`
+
+## 0.34.2
+
+### Patch Changes
+
+- [#385](https://github.com/FuelLabs/fuel-connectors/pull/385) [`9c0923b`](https://github.com/FuelLabs/fuel-connectors/commit/9c0923b333c35b42cff153182fb85a606dbe0279) Thanks [@helciofranco](https://github.com/helciofranco)! - Revert: fixed node dynamic import error introduced in https://github.com/FuelLabs/fuel-connectors/pull/382
+
+## 0.34.1
+
+### Patch Changes
+
+- [#382](https://github.com/FuelLabs/fuel-connectors/pull/382) [`b0708e3`](https://github.com/FuelLabs/fuel-connectors/commit/b0708e324774a6d95fb0c464433d874c598ce8bd) Thanks [@arthurgeron](https://github.com/arthurgeron)! - Fixed node dynamic import error
+
+## 0.34.0
+
+## 0.33.0
+
+### Patch Changes
+
+- [#374](https://github.com/FuelLabs/fuel-connectors/pull/374) [`58d0388`](https://github.com/FuelLabs/fuel-connectors/commit/58d0388d78e455b5dc420cfca6fdf0c77db47456) Thanks [@luizstacio](https://github.com/luizstacio)! - feat: add sign message with custom curves for predicates
+
+## 0.32.0
+
+### Minor Changes
+
+- [#370](https://github.com/FuelLabs/fuel-connectors/pull/370) [`9a20224`](https://github.com/FuelLabs/fuel-connectors/commit/9a202245ceb8653435e963a98fc3453afd81f52b) Thanks [@petertonysmith94](https://github.com/petertonysmith94)! - Updated Fuel SDK to 0.95.0
+
+## 0.31.6
+
+### Patch Changes
+
+- [#368](https://github.com/FuelLabs/fuel-connectors/pull/368) [`450b612`](https://github.com/FuelLabs/fuel-connectors/commit/450b612cc884039565d8f7c1e769995c0b0010e4) Thanks [@arthurgeron](https://github.com/arthurgeron)! - Fixed EVM wallets being allowed to stay on unsupported networks.
+
+## 0.31.5
+
+### Patch Changes
+
+- [#366](https://github.com/FuelLabs/fuel-connectors/pull/366) [`11f468c`](https://github.com/FuelLabs/fuel-connectors/commit/11f468c6ac4ef8166ea8911c4fb3465e3fe21cf6) Thanks [@luizstacio](https://github.com/luizstacio)! - Fix FUEL duplicated fuel instances
+
+## 0.31.4
+
+## 0.31.3
+
+## 0.31.2
+
+## 0.31.1
+
+### Patch Changes
+
+- [#345](https://github.com/FuelLabs/fuel-connectors/pull/345) [`fa88dca`](https://github.com/FuelLabs/fuel-connectors/commit/fa88dcabb862c9f407904765a0e6089a0f124b98) Thanks [@LuizAsFight](https://github.com/LuizAsFight)! - chore: update ts-sdk
+
+## 0.31.0
+
+### Minor Changes
+
+- [#343](https://github.com/FuelLabs/fuel-connectors/pull/343) [`4303a90`](https://github.com/FuelLabs/fuel-connectors/commit/4303a90c73fcdd86d3f8df8c96307c40984dd4f9) Thanks [@LuizAsFight](https://github.com/LuizAsFight)! - Add support for predicates deployed with blob-style
+
+## 0.30.1
+
+## 0.30.0
+
+### Minor Changes
+
+- [#333](https://github.com/FuelLabs/fuel-connectors/pull/333) [`ac45fc9`](https://github.com/FuelLabs/fuel-connectors/commit/ac45fc9c2ac3d2ddb2374cb6ea642e58635f6650) Thanks [@LuizAsFight](https://github.com/LuizAsFight)! - feat: defaultConnetors accept providerUrl
+
+## 0.29.6
+
 ## 0.29.5
 
 ## 0.29.4

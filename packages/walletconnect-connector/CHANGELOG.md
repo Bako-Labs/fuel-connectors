@@ -1,5 +1,71 @@
 # @fuel-connectors/walletconnect-connector
 
+## 0.35.0
+
+### Minor Changes
+
+- [#387](https://github.com/FuelLabs/fuel-connectors/pull/387) [`5c3d337`](https://github.com/FuelLabs/fuel-connectors/commit/5c3d3375db00b31792a05010a026ed2b74df21db) Thanks [@arboleya](https://github.com/arboleya)! - Upgrading `fuels` to `0.96.0`
+
+## 0.34.2
+
+## 0.34.1
+
+## 0.34.0
+
+## 0.33.0
+
+### Minor Changes
+
+- [#377](https://github.com/FuelLabs/fuel-connectors/pull/377) [`aa757db`](https://github.com/FuelLabs/fuel-connectors/commit/aa757dbddf0b458be14310251613ba39abd52413) Thanks [@helciofranco](https://github.com/helciofranco)! - Hide `All Wallets` option in the EVM and SVM connectors.
+
+### Patch Changes
+
+- [#374](https://github.com/FuelLabs/fuel-connectors/pull/374) [`58d0388`](https://github.com/FuelLabs/fuel-connectors/commit/58d0388d78e455b5dc420cfca6fdf0c77db47456) Thanks [@luizstacio](https://github.com/luizstacio)! - feat: add sign message with custom curves for predicates
+
+## 0.32.0
+
+### Minor Changes
+
+- [#370](https://github.com/FuelLabs/fuel-connectors/pull/370) [`9a20224`](https://github.com/FuelLabs/fuel-connectors/commit/9a202245ceb8653435e963a98fc3453afd81f52b) Thanks [@petertonysmith94](https://github.com/petertonysmith94)! - Updated Fuel SDK to 0.95.0
+
+## 0.31.6
+
+### Patch Changes
+
+- [#368](https://github.com/FuelLabs/fuel-connectors/pull/368) [`450b612`](https://github.com/FuelLabs/fuel-connectors/commit/450b612cc884039565d8f7c1e769995c0b0010e4) Thanks [@arthurgeron](https://github.com/arthurgeron)! - Fixed EVM wallets being allowed to stay on unsupported networks.
+
+## 0.31.5
+
+## 0.31.4
+
+### Patch Changes
+
+- [#360](https://github.com/FuelLabs/fuel-connectors/pull/360) [`9c1db2e`](https://github.com/FuelLabs/fuel-connectors/commit/9c1db2e590affcb78a5019280471f65d4ddb0f61) Thanks [@arthurgeron](https://github.com/arthurgeron)! - Fixed getProvider is not a function error in Wallet Connect Connector
+
+- [#360](https://github.com/FuelLabs/fuel-connectors/pull/360) [`9c1db2e`](https://github.com/FuelLabs/fuel-connectors/commit/9c1db2e590affcb78a5019280471f65d4ddb0f61) Thanks [@arthurgeron](https://github.com/arthurgeron)! - Fixed some EVM wallets rejecting sign message right after connection
+
+## 0.31.3
+
+## 0.31.2
+
+## 0.31.1
+
+### Patch Changes
+
+- [#345](https://github.com/FuelLabs/fuel-connectors/pull/345) [`fa88dca`](https://github.com/FuelLabs/fuel-connectors/commit/fa88dcabb862c9f407904765a0e6089a0f124b98) Thanks [@LuizAsFight](https://github.com/LuizAsFight)! - chore: update ts-sdk
+
+## 0.31.0
+
+### Minor Changes
+
+- [#343](https://github.com/FuelLabs/fuel-connectors/pull/343) [`4303a90`](https://github.com/FuelLabs/fuel-connectors/commit/4303a90c73fcdd86d3f8df8c96307c40984dd4f9) Thanks [@LuizAsFight](https://github.com/LuizAsFight)! - Add support for predicates deployed with blob-style
+
+## 0.30.1
+
+## 0.30.0
+
+## 0.29.6
+
 ## 0.29.5
 
 ### Patch Changes

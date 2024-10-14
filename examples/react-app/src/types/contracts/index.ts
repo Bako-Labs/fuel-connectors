@@ -10,7 +10,7 @@
   Fuel-Core version: 0.35.0
 */
 
-export { Counter } from './Counter';
-export { CounterFactory } from './CounterFactory';
-export { NativeAssetContract } from './NativeAssetContract';
-export { NativeAssetContractFactory } from './NativeAssetContractFactory';
+export { Counter } from "./Counter";
+export { CounterFactory } from "./CounterFactory";
+export { NativeAssetContract } from "./NativeAssetContract";
+export { NativeAssetContractFactory } from "./NativeAssetContractFactory";

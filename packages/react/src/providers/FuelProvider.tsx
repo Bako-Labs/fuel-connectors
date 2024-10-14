@@ -16,9 +16,9 @@ export { useConnectUI } from './FuelUIProvider';
 type FuelProviderProps = {
   ui?: boolean;
   uiConfig?: UIConfig;
-  fuelConfig?: FuelConfig;
+  fuelConfig: FuelConfig;
   networks?: Array<NetworkConfig>;
-} & Omit<FuelUIProviderProps, 'uiConfig'>;
+} & Pick<FuelUIProviderProps, 'theme' | 'children'>;
 
 export function FuelProvider({
   theme: _theme,
@@ -40,6 +40,7 @@ export function FuelProvider({
       ),
     [_uiConfig],
   );
+
   if (ui) {
     return (
       <FuelHooksProvider fuelConfig={fuelConfig} networks={networks}>
@@ -49,7 +50,7 @@ export function FuelProvider({
           uiConfig={uiConfig}
         >
           <Connect />
-          {networks != null && <NetworkDialog theme={theme} />}
+          <NetworkDialog theme={theme} />
           {uiConfig.suggestBridge && <BridgeDialog theme={theme} />}
           {children}
         </FuelUIProvider>

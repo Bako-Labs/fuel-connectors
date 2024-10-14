@@ -8,11 +8,11 @@ import {
   type SelectNetworkArguments,
   type StorageAbstract,
   type TransactionRequestLike,
-} from 'fuels';
+} from "fuels";
 
-import { BakoStorage } from './BakoSafeStorage';
-import { DAppWindow } from './DAPPWindow';
-import { SocketClient } from './SocketClient';
+import { BakoStorage } from "./BakoSafeStorage";
+import { DAppWindow } from "./DAPPWindow";
+import { SocketClient } from "./SocketClient";
 import {
   APP_DESCRIPTION,
   APP_IMAGE_DARK,
@@ -22,17 +22,18 @@ import {
   APP_URL,
   APP_VERSION,
   HAS_WINDOW,
-  HOST_URL, IS_SAFARI,
+  HOST_URL,
+  IS_SAFARI,
   SESSION_ID,
   WINDOW,
-} from './constants';
-import { RequestAPI } from './request';
+} from "./constants";
+import { RequestAPI } from "./request";
 import {
   type BakoSafeConnectorConfig,
   BakoSafeConnectorEvents,
   type IResponseAuthConfirmed,
   type IResponseTxCofirmed,
-} from './types';
+} from "./types";
 
 export class BakoSafeConnector extends FuelConnector {
   name = APP_NAME;
@@ -80,14 +81,14 @@ export class BakoSafeConnector extends FuelConnector {
   private getStorage(storage?: StorageAbstract) {
     const _storage = storage ?? WINDOW.localStorage ?? new BakoStorage();
     if (!_storage) {
-      throw new Error('No storage provided');
+      throw new Error("No storage provided");
     }
 
     return _storage;
   }
 
   private async getSessionId() {
-    let sessionId: string = (await this.storage?.getItem(SESSION_ID)) || '';
+    let sessionId: string = (await this.storage?.getItem(SESSION_ID)) || "";
     if (!sessionId) {
       sessionId = crypto.randomUUID();
       await this.storage?.setItem(SESSION_ID, sessionId);
@@ -158,7 +159,7 @@ export class BakoSafeConnector extends FuelConnector {
       }
 
       // window controll
-      this.dAppWindow?.open('/', reject);
+      this.dAppWindow?.open("/", reject);
       this.checkWindow();
 
       //events controll
@@ -182,7 +183,7 @@ export class BakoSafeConnector extends FuelConnector {
 
           this.dAppWindow?.close();
           resolve(connected);
-        },
+        }
       );
     });
   }
@@ -195,11 +196,11 @@ export class BakoSafeConnector extends FuelConnector {
    */
   async sendTransaction(
     _address: string,
-    _transaction: TransactionRequestLike,
+    _transaction: TransactionRequestLike
   ) {
     return new Promise<string>((resolve, reject) => {
       // window controll
-      this.dAppWindow?.open('/dapp/transaction', reject);
+      this.dAppWindow?.open("/dapp/transaction", reject);
       this.checkWindow();
 
       //events controll
@@ -209,14 +210,14 @@ export class BakoSafeConnector extends FuelConnector {
         BakoSafeConnectorEvents.CLIENT_DISCONNECTED,
         () => {
           this.dAppWindow?.close();
-          reject(new Error('Client disconnected'));
-        },
+          reject();
+        }
       );
 
       // @ts-ignore
       this.on(BakoSafeConnectorEvents.TX_TIMEOUT, () => {
         this.dAppWindow?.close();
-        reject(new Error('Transaction timeout'));
+        reject(new Error("Transaction timeout"));
       });
 
       // @ts-ignore
@@ -233,7 +234,7 @@ export class BakoSafeConnector extends FuelConnector {
         ({ data }: { data: IResponseTxCofirmed }) => {
           this.dAppWindow?.close();
           resolve(`0x${data.id}`);
-        },
+        }
       );
     });
   }
@@ -272,7 +273,7 @@ export class BakoSafeConnector extends FuelConnector {
 
   async currentAccount() {
     const data = await this.api.get(
-      `/connections/${this.sessionId}/currentAccount`,
+      `/connections/${this.sessionId}/currentAccount`
     );
 
     const isInvalid = data && JSON.stringify(data) === JSON.stringify({});
@@ -290,7 +291,7 @@ export class BakoSafeConnector extends FuelConnector {
 
   async currentNetwork(): Promise<Network> {
     const data = await this.api.get(
-      `/connections/${this.sessionId}/currentNetwork`,
+      `/connections/${this.sessionId}/currentNetwork`
     );
 
     const provider = await Provider.create(data);
@@ -310,34 +311,59 @@ export class BakoSafeConnector extends FuelConnector {
   }
 
   async signMessage(_address: string, _message: string): Promise<string> {
-    throw new Error('Method not implemented.');
+    return new Promise<string>((resolve, reject) => {
+      // window controll
+      this.dAppWindow?.open(`dapp/sign/${_message}`, reject);
+      this.checkWindow();
+
+      //events controll
+      this.on(
+        //@ts-ignore
+        BakoSafeConnectorEvents.CLIENT_DISCONNECTED,
+        () => {
+          this.dAppWindow?.close();
+          reject();
+        }
+      );
+
+      this.on(
+        //@ts-ignore
+        BakoSafeConnectorEvents.SIGN_CONFIRMED,
+        (data: { data: { signedMessage: string }; from: string }) => {
+          const signedMessage = data.data.signedMessage;
+
+          this.dAppWindow?.close();
+          resolve(signedMessage);
+        }
+      );
+    });
   }
 
   async addAssets(_assets: Asset[]): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    throw new Error("Method not implemented.");
   }
 
   async addAsset(_assets: Asset): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    throw new Error("Method not implemented.");
   }
 
   async addNetwork(_networkUrl: string): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    throw new Error("Method not implemented.");
   }
 
   async selectNetwork(_network: SelectNetworkArguments): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    throw new Error("Method not implemented.");
   }
 
   async addABI(_contractId: string, _abi: FuelABI): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    throw new Error("Method not implemented.");
   }
 
   async getABI(_id: string): Promise<FuelABI | null> {
-    throw new Error('Method not implemented.');
+    throw new Error("Method not implemented.");
   }
 
   async hasABI(_id: string): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    throw new Error("Method not implemented.");
   }
 }

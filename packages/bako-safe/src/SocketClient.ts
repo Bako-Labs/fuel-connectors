@@ -1,7 +1,7 @@
-import { type Socket, io } from 'socket.io-client';
-import type { BakoSafeConnector } from './BakoSafeConnector';
-import { APP_URL, SOCKET_URL } from './constants';
-import { WINDOW } from './constants';
+import { type Socket, io } from "socket.io-client";
+import type { BakoSafeConnector } from "./BakoSafeConnector";
+import { APP_URL, SOCKET_URL } from "./constants";
+import { WINDOW } from "./constants";
 import {
   BakoSafeConnectorEvents,
   BakoSafeUsernames,
@@ -10,9 +10,9 @@ import {
   type IResponseTxCofirmed,
   type ISocketAuth,
   type ISocketMessage,
-} from './types';
+} from "./types";
 
-const default_socket_auth: Omit<ISocketAuth, 'sessionId'> = {
+const default_socket_auth: Omit<ISocketAuth, "sessionId"> = {
   username: BakoSafeUsernames.CONNECTOR,
   data: new Date(),
   origin: WINDOW.origin ?? APP_URL,
@@ -46,7 +46,7 @@ export class SocketClient {
             data: data.data,
           });
         }
-      },
+      }
     );
 
     this.server.connect();

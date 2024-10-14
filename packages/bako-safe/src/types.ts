@@ -1,28 +1,31 @@
-import type { StorageAbstract, TransactionRequestLike } from 'fuels';
-import type { BakoSafeConnector } from './BakoSafeConnector';
-import type { RequestAPI } from './request';
+import type { StorageAbstract, TransactionRequestLike } from "fuels";
+import type { BakoSafeConnector } from "./BakoSafeConnector";
+import type { RequestAPI } from "./request";
 
 export enum BakoSafeConnectorEvents {
   //default
-  DEFAULT = 'message',
+  DEFAULT = "message",
 
   //client
-  CLIENT_DISCONNECTED = '[CLIENT_DISCONNECTED]',
-  CLIENT_CONNECTED = '[CONNECTED]',
+  CLIENT_DISCONNECTED = "[CLIENT_DISCONNECTED]",
+  CLIENT_CONNECTED = "[CONNECTED]",
 
   //transactions
-  TX_PENDING = '[TX_EVENT_REQUESTED]',
-  TX_CONFIRMED = '[TX_EVENT_CONFIRMED]',
-  TX_TIMEOUT = '[TX_EVENT_TIMEOUT]',
+  TX_PENDING = "[TX_EVENT_REQUESTED]",
+  TX_CONFIRMED = "[TX_EVENT_CONFIRMED]",
+  TX_TIMEOUT = "[TX_EVENT_TIMEOUT]",
 
   //auth
-  AUTH_CONFIRMED = '[AUTH_CONFIRMED]',
+  AUTH_CONFIRMED = "[AUTH_CONFIRMED]",
+
+  //sign
+  SIGN_CONFIRMED = "[SIGN_CONFIRMED]",
 }
 
 export enum BakoSafeUsernames {
-  CONNECTOR = '[CONNECTOR]',
-  CLIENT = '[UI]',
-  SERVER = '[API]',
+  CONNECTOR = "[CONNECTOR]",
+  CLIENT = "[UI]",
+  SERVER = "[API]",
 }
 
 export type BakoSafeConnectorConfig = {

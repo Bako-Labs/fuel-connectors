@@ -4,11 +4,12 @@ import { useLogEvents } from '../hooks/use-log-events';
 import { useWallet } from '../hooks/useWallet';
 import { NativeAssetContract } from '../types';
 import type { CustomError } from '../utils/customError';
-import { DEFAULT_AMOUNT } from './balance';
 import Button from './button';
 import ContractLink from './contract-link';
 import Feature from './feature';
 import Notification, { type Props as NotificationProps } from './notification';
+
+export const DEFAULT_AMOUNT = bn.parseUnits('0.0001');
 
 interface Props {
   isSigning: boolean;

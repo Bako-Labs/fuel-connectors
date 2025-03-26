@@ -1,5 +1,49 @@
 # @fuels/connectors
 
+## 0.39.2
+
+### Patch Changes
+
+- [#492](https://github.com/FuelLabs/fuel-connectors/pull/492) [`15c6583`](https://github.com/FuelLabs/fuel-connectors/commit/15c6583ad7d07c2c511630b6413df18da1fdd083) Thanks [@LuizAsFight](https://github.com/LuizAsFight)! - feat: update to fuels 0.100.0 + relay tx interface changes to fuel wallet
+
+## 0.39.1
+
+## 0.39.0
+
+### Minor Changes
+
+- [#458](https://github.com/FuelLabs/fuel-connectors/pull/458) [`b21855f`](https://github.com/FuelLabs/fuel-connectors/commit/b21855feaf6275b16f626156ba7d1c74262f3a5b) Thanks [@arthurgeron](https://github.com/arthurgeron)! - Upgrade Fuel SDK to 0.98.0
+
+- [#458](https://github.com/FuelLabs/fuel-connectors/pull/458) [`b21855f`](https://github.com/FuelLabs/fuel-connectors/commit/b21855feaf6275b16f626156ba7d1c74262f3a5b) Thanks [@arthurgeron](https://github.com/arthurgeron)! - Support gasless transactions on Fuel Wallet
+
+## 0.38.1
+
+## 0.38.0
+
+### Minor Changes
+
+- [#454](https://github.com/FuelLabs/fuel-connectors/pull/454) [`71256d8`](https://github.com/FuelLabs/fuel-connectors/commit/71256d8c0df3170bfdafac9710556af3d32eabc3) Thanks [@helciofranco](https://github.com/helciofranco)! - Added a pre-signature dialog to the `WalletConnectConnector` to inform users about the signature purpose.
+
+## 0.37.0
+
+### Minor Changes
+
+- [#450](https://github.com/FuelLabs/fuel-connectors/pull/450) [`dd2c3e0`](https://github.com/FuelLabs/fuel-connectors/commit/dd2c3e0a12c90f220a442aef6b1098e82e0b78c1) Thanks [@helciofranco](https://github.com/helciofranco)! - Set mainnet as default chain if no chain ID is specified.
+
+## 0.36.1
+
+## 0.36.0
+
+### Minor Changes
+
+- [#403](https://github.com/FuelLabs/fuel-connectors/pull/403) [`02574b4`](https://github.com/FuelLabs/fuel-connectors/commit/02574b4ed29d698915b928b218812fbc57612cb1) Thanks [@LuizAsFight](https://github.com/LuizAsFight)! - feat: added `skipAutoReconnect` to avoid WalletConnectConnector reconnecting automatically over the Wagmi already reconnected
+
+## 0.35.1
+
+### Patch Changes
+
+- [#389](https://github.com/FuelLabs/fuel-connectors/pull/389) [`d6e12c9`](https://github.com/FuelLabs/fuel-connectors/commit/d6e12c9e13c67a6c00065cf8960a02d798830cdb) Thanks [@Torres-ssf](https://github.com/Torres-ssf)! - Upgrading `fuels` to `0.96.1`
+
 ## 0.35.0
 
 ### Minor Changes

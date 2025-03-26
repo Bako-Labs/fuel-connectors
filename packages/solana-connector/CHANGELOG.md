@@ -1,5 +1,55 @@
 # @fuel-connectors/solana-connector
 
+## 0.39.2
+
+### Patch Changes
+
+- [#492](https://github.com/FuelLabs/fuel-connectors/pull/492) [`15c6583`](https://github.com/FuelLabs/fuel-connectors/commit/15c6583ad7d07c2c511630b6413df18da1fdd083) Thanks [@LuizAsFight](https://github.com/LuizAsFight)! - feat: update to fuels 0.100.0 + relay tx interface changes to fuel wallet
+
+## 0.39.1
+
+### Patch Changes
+
+- [#484](https://github.com/FuelLabs/fuel-connectors/pull/484) [`455dacb`](https://github.com/FuelLabs/fuel-connectors/commit/455dacba761ca642cd784097bc50e6ef4a2586e4) Thanks [@nelitow](https://github.com/nelitow)! - Update `vitest` dependencies.
+
+- [#480](https://github.com/FuelLabs/fuel-connectors/pull/480) [`3dea9f6`](https://github.com/FuelLabs/fuel-connectors/commit/3dea9f697ac8d5119f9b7611efc43551cbfd31c3) Thanks [@arthurgeron](https://github.com/arthurgeron)! - chore: align all fuel-core/forc versions
+
+## 0.39.0
+
+### Minor Changes
+
+- [#458](https://github.com/FuelLabs/fuel-connectors/pull/458) [`b21855f`](https://github.com/FuelLabs/fuel-connectors/commit/b21855feaf6275b16f626156ba7d1c74262f3a5b) Thanks [@arthurgeron](https://github.com/arthurgeron)! - Upgrade Fuel SDK to 0.98.0
+
+- [#473](https://github.com/FuelLabs/fuel-connectors/pull/473) [`5f9794e`](https://github.com/FuelLabs/fuel-connectors/commit/5f9794e17520411129610290366759fe326bae58) Thanks [@luizstacio](https://github.com/luizstacio)! - Introduce custom `encodeTxId` methods for different predicate versions in EVM Connectors to fix wallet-specific signing limitations by using UTF-8 encoding.
+
+## 0.38.1
+
+### Patch Changes
+
+- [#463](https://github.com/FuelLabs/fuel-connectors/pull/463) [`2d83af7`](https://github.com/FuelLabs/fuel-connectors/commit/2d83af76a78de31748fa0b78ba68e67227e54c98) Thanks [@LuizAsFight](https://github.com/LuizAsFight)! - fix: sort evm/svm predicates by most recent first on the new helper methods
+
+## 0.38.0
+
+### Patch Changes
+
+- [#460](https://github.com/FuelLabs/fuel-connectors/pull/460) [`0268e0f`](https://github.com/FuelLabs/fuel-connectors/commit/0268e0fe0e5c44864c660579954594f008f6a779) Thanks [@LuizAsFight](https://github.com/LuizAsFight)! - feat: add `getFuelPredicateAddresses` to get fuel predicate account address from a svm address
+
+## 0.37.0
+
+### Minor Changes
+
+- [#450](https://github.com/FuelLabs/fuel-connectors/pull/450) [`dd2c3e0`](https://github.com/FuelLabs/fuel-connectors/commit/dd2c3e0a12c90f220a442aef6b1098e82e0b78c1) Thanks [@helciofranco](https://github.com/helciofranco)! - Set mainnet as default chain if no chain ID is specified.
+
+## 0.36.1
+
+## 0.36.0
+
+## 0.35.1
+
+### Patch Changes
+
+- [#389](https://github.com/FuelLabs/fuel-connectors/pull/389) [`d6e12c9`](https://github.com/FuelLabs/fuel-connectors/commit/d6e12c9e13c67a6c00065cf8960a02d798830cdb) Thanks [@Torres-ssf](https://github.com/Torres-ssf)! - Upgrading `fuels` to `0.96.1`
+
 ## 0.35.0
 
 ### Minor Changes

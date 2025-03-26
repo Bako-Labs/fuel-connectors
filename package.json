@@ -16,7 +16,12 @@
     "build:watch": "turbo build:watch",
     "ts:check": "turbo run ts:check",
     "test": "vitest",
+    "node:up": "make -C ./docker up",
+    "node:down": "make -C ./docker down",
+    "node:clean": "make -C ./docker clean",
     "test:ci": "turbo run test -- --run --coverage.enabled --coverage.reporter=json-summary --coverage.reporter=json",
+    "test:e2e": "turbo run test:e2e",
+    "test:e2e:local": "turbo run test:e2e:local --filter @e2e-tests/runner",
     "lint:check": "biome check --apply-unsafe .",
     "lint:ci": "biome lint --max-diagnostics=1000 --diagnostic-level=error .",
     "format": "biome format --write .",
@@ -31,26 +36,38 @@
     "@changesets/cli": "2.26.2",
     "@fuels/ts-config": "0.20.0",
     "@fuels/tsup-config": "0.20.0",
-    "@vitest/coverage-v8": "2.0.2",
+    "@types/node": "20.12.11",
+    "@vitest/coverage-v8": "2.1.9",
     "compare-versions": "6.1.0",
+    "fuels": "0.100.0",
     "husky": "9.0.11",
     "lint-staged": "15.2.2",
     "tsx": "^4.16.2",
     "turbo": "2.0.11",
-    "vitest": "2.0.2"
+    "vitest": "2.1.9"
   },
   "engines": {
-    "node": ">=18",
-    "pnpm": ">=9"
+    "node": "20.x",
+    "pnpm": "9.x"
   },
+  "packageManager": "pnpm@9.5.0",
   "pnpm": {
     "overrides": {
       "braces@<3.0.3": ">=3.0.3",
       "ws@>=8.0.0 <8.17.1": ">=8.17.1",
       "ws@>=7.0.0 <7.5.10": ">=7.5.10",
       "ws@>=6.0.0 <6.2.3": ">=6.2.3",
-      "fast-xml-parser@<4.4.1": ">=4.4.1"
+      "fast-xml-parser@<4.4.1": ">=4.4.1",
+      "rollup@>=4.0.0 <4.22.4": ">=4.22.4",
+      "secp256k1@=5.0.0": ">=5.0.1",
+      "elliptic@<6.6.0": ">=6.6.0",
+      "next@>=10.0.0 <14.2.22": ">=14.2.22",
+      "cross-spawn@>=7.0.0 <7.0.5": ">=7.0.5",
+      "nanoid@<3.3.8": "3.3.8",
+      "vite@>=5.2.0 <5.4.6": ">=5.4.6",
+      "esbuild@<=0.24.2": ">=0.25.0",
+      "@babel/runtime@<7.26.10": ">=7.26.10",
+      "@babel/helpers@<7.26.10": ">=7.26.10"
     }
-  },
-  "packageManager": "pnpm@9.5.0"
+  }
 }

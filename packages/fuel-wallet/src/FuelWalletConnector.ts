@@ -7,6 +7,7 @@ import {
   FuelConnector,
   FuelConnectorEventType,
   FuelConnectorEventTypes,
+  type FuelConnectorSendTxParams,
   type Network,
   Provider,
   type SelectNetworkArguments,
@@ -18,6 +19,7 @@ import type { JSONRPCRequest } from 'json-rpc-2.0';
 import { JSONRPCClient } from 'json-rpc-2.0';
 
 import {
+  APP_IMAGE,
   CONNECTOR_SCRIPT,
   CONTENT_SCRIPT_NAME,
   EVENT_MESSAGE,
@@ -36,7 +38,7 @@ export class FuelWalletConnector extends FuelConnector {
   external = false;
   events = FuelConnectorEventTypes;
   metadata: ConnectorMetadata = {
-    image: '/connectors/fuel-wallet.svg',
+    image: APP_IMAGE,
     install: {
       action: 'Install',
       description:
@@ -192,26 +194,34 @@ export class FuelWalletConnector extends FuelConnector {
   async sendTransaction(
     address: string,
     transaction: TransactionRequestLike,
+    params?: FuelConnectorSendTxParams,
   ): Promise<string> {
     if (!transaction) {
       throw new Error('Transaction is required');
     }
-    // Transform transaction object to a transaction request
-    const txRequest = transactionRequestify(transaction);
+    let txRequest = transactionRequestify(transaction);
 
-    /**
-     * @todo We should remove this once the chainId standard start to be used and chainId is required
-     * to be correct according to the network the transaction wants to target.
-     */
-    const network = await this.currentNetwork();
-    const provider = {
-      url: network.url,
-    };
+    const {
+      onBeforeSend,
+      skipCustomFee,
+      provider,
+      transactionState,
+      transactionSummary,
+    } = params || {};
+
+    if (onBeforeSend) {
+      txRequest = await onBeforeSend(txRequest);
+    }
+
+    // Transform transaction object to a transaction request
 
     return this.client.request('sendTransaction', {
       address,
       transaction: JSON.stringify(txRequest),
       provider,
+      skipCustomFee,
+      transactionState,
+      transactionSummary,
     });
   }
 
@@ -284,11 +294,11 @@ export class FuelWalletConnector extends FuelConnector {
      * @todo: Remove fetch provider once Fuel Wallet supports adding networks
      * by URL
      */
-    const provider = await Provider.create(networkUrl);
+    const provider = new Provider(networkUrl);
     return this.client.request('addNetwork', {
       network: {
         url: provider.url,
-        name: provider.getChain().name,
+        name: (await provider.getChain()).name,
       },
     });
   }

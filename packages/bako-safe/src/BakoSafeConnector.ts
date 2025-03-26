@@ -2,7 +2,6 @@ import {
   type Asset,
   type FuelABI,
   FuelConnector,
-  FuelConnectorEventTypes,
   type Network,
   Provider,
   type SelectNetworkArguments,
@@ -22,7 +21,8 @@ import {
   APP_URL,
   APP_VERSION,
   HAS_WINDOW,
-  HOST_URL, IS_SAFARI,
+  HOST_URL,
+  IS_SAFARI,
   SESSION_ID,
   WINDOW,
 } from './constants';
@@ -50,11 +50,6 @@ export class BakoSafeConnector extends FuelConnector {
   installed = !IS_SAFARI;
   connected = false;
   external = false;
-
-  events = {
-    ...BakoSafeConnectorEvents,
-    ...FuelConnectorEventTypes,
-  };
 
   private readonly appUrl: string;
   private readonly host: string;
@@ -104,9 +99,6 @@ export class BakoSafeConnector extends FuelConnector {
         clearInterval(open_interval);
       }
     }, 2000);
-    //todo: check connection on safari
-    // safari browser does not support window.opener
-    //if(this.dAppWindow?.isSafariBrowser) return;
 
     // timeout to close
     const interval = setInterval(() => {
@@ -126,14 +118,29 @@ export class BakoSafeConnector extends FuelConnector {
 
   private async setup() {
     if (!HAS_WINDOW) return;
+    if (this.socket) this.socket.checkConnection();
     if (this.setupReady) return;
     const sessionId = await this.getSessionId();
 
     this.sessionId = sessionId;
 
-    this.socket = new SocketClient({
+    this.socket = SocketClient.create({
       sessionId,
       events: this,
+      onConnectStateChange: async (connected) => {
+        this.connected = connected;
+        this.emit(this.events.connection, connected);
+
+        console.log('Connect state', connected);
+
+        if (connected) {
+          this.emit(this.events.accounts, await this.accounts());
+          this.emit(this.events.currentAccount, await this.currentAccount());
+        } else {
+          this.emit(this.events.accounts, []);
+          this.emit(this.events.currentAccount, null);
+        }
+      },
     });
 
     this.dAppWindow = new DAppWindow({
@@ -151,38 +158,37 @@ export class BakoSafeConnector extends FuelConnector {
   // Connector methods
   // ============================================================
   async connect() {
+    await this.setup();
+
     return new Promise<boolean>((resolve, reject) => {
       if (this.connected) {
         resolve(true);
         return;
       }
 
-      // window controll
       this.dAppWindow?.open('/', reject);
       this.checkWindow();
 
-      //events controll
-      // @ts-ignore
       this.once(BakoSafeConnectorEvents.CLIENT_DISCONNECTED, () => {
         this.dAppWindow?.close();
         reject(false);
       });
 
       this.once(
-        //@ts-ignore
         BakoSafeConnectorEvents.AUTH_CONFIRMED,
         async ({ data }: { data: IResponseAuthConfirmed }) => {
           const connected = data.connected;
           const accounts = await this.accounts();
           const currentAccount = await this.currentAccount();
 
+          this.connected = connected;
           this.emit(this.events.connection, connected);
           this.emit(this.events.accounts, accounts);
           this.emit(this.events.currentAccount, currentAccount);
 
           this.dAppWindow?.close();
           resolve(connected);
-        }
+        },
       );
     });
   }
@@ -198,28 +204,21 @@ export class BakoSafeConnector extends FuelConnector {
     _transaction: TransactionRequestLike,
   ) {
     return new Promise<string>((resolve, reject) => {
-      // window controll
       this.dAppWindow?.open('/dapp/transaction', reject);
       this.checkWindow();
 
-      //events controll
-      this.once(
-        //@ts-ignore
-        BakoSafeConnectorEvents.CLIENT_DISCONNECTED,
-        () => {
-          this.dAppWindow?.close();
-          reject(new Error('Client disconnected'));
-        }
-      );
+      this.once(BakoSafeConnectorEvents.CLIENT_DISCONNECTED, () => {
+        this.dAppWindow?.close();
+        reject(new Error('Client disconnected'));
+      });
 
-      // @ts-ignore
       this.once(BakoSafeConnectorEvents.TX_TIMEOUT, () => {
         this.dAppWindow?.close();
         reject(new Error('Transaction timeout'));
       });
 
       // @ts-ignore
-      this.once(BakoSafeConnectorEvents.CLIENT_CONNECTED, () => {
+      this.on(BakoSafeConnectorEvents.CLIENT_CONNECTED, () => {
         this.socket?.server.emit(BakoSafeConnectorEvents.TX_PENDING, {
           _transaction,
           _address,
@@ -227,11 +226,10 @@ export class BakoSafeConnector extends FuelConnector {
       });
 
       this.once(
-        // @ts-ignore
         BakoSafeConnectorEvents.TX_CONFIRMED,
         ({ data }: { data: IResponseTxCofirmed }) => {
           resolve(`0x${data.id}`);
-        }
+        },
       );
     });
   }
@@ -252,13 +250,8 @@ export class BakoSafeConnector extends FuelConnector {
   }
 
   async isConnected() {
-    //this request goes to the api without sessionId
-    const sessionId = this.sessionId ?? (await this.getSessionId());
-    const data = await this.api.get(`/connections/${sessionId}/state`);
-
-    this.connected = data;
-
-    return data;
+    await this.setup();
+    return this.connected;
   }
 
   async accounts() {
@@ -280,9 +273,7 @@ export class BakoSafeConnector extends FuelConnector {
 
   async disconnect() {
     await this.api.delete(`/connections/${this.sessionId}`);
-    this.emit(this.events.connection, false);
-    this.emit(this.events.accounts, []);
-    this.emit(this.events.currentAccount, null);
+    this.socket?.server.emit(BakoSafeConnectorEvents.CONNECTION_STATE);
     return false;
   }
 
@@ -291,11 +282,11 @@ export class BakoSafeConnector extends FuelConnector {
       `/connections/${this.sessionId}/currentNetwork`,
     );
 
-    const provider = await Provider.create(data);
+    const provider = new Provider(data);
 
     return {
       url: provider.url,
-      chainId: provider.getChainId(),
+      chainId: await provider.getChainId(),
     };
   }
 

@@ -1,5 +1,25 @@
 # docs
 
+## 0.30.1
+
+### Patch Changes
+
+- [#492](https://github.com/FuelLabs/fuel-connectors/pull/492) [`15c6583`](https://github.com/FuelLabs/fuel-connectors/commit/15c6583ad7d07c2c511630b6413df18da1fdd083) Thanks [@LuizAsFight](https://github.com/LuizAsFight)! - feat: update to fuels 0.100.0 + relay tx interface changes to fuel wallet
+
+## 0.30.0
+
+### Minor Changes
+
+- [#458](https://github.com/FuelLabs/fuel-connectors/pull/458) [`b21855f`](https://github.com/FuelLabs/fuel-connectors/commit/b21855feaf6275b16f626156ba7d1c74262f3a5b) Thanks [@arthurgeron](https://github.com/arthurgeron)! - Upgrade Fuel SDK to 0.98.0
+
+- [#473](https://github.com/FuelLabs/fuel-connectors/pull/473) [`5f9794e`](https://github.com/FuelLabs/fuel-connectors/commit/5f9794e17520411129610290366759fe326bae58) Thanks [@luizstacio](https://github.com/luizstacio)! - Introduce custom `encodeTxId` methods for different predicate versions in EVM Connectors to fix wallet-specific signing limitations by using UTF-8 encoding.
+
+## 0.29.1
+
+### Patch Changes
+
+- [#389](https://github.com/FuelLabs/fuel-connectors/pull/389) [`d6e12c9`](https://github.com/FuelLabs/fuel-connectors/commit/d6e12c9e13c67a6c00065cf8960a02d798830cdb) Thanks [@Torres-ssf](https://github.com/Torres-ssf)! - Upgrading `fuels` to `0.96.1`
+
 ## 0.29.0
 
 ### Minor Changes

@@ -17,6 +17,9 @@ export enum BakoSafeConnectorEvents {
 
   //auth
   AUTH_CONFIRMED = '[AUTH_CONFIRMED]',
+
+  CONNECTION_STATE = '[CONNECTION_STATE]',
+  DISCONNECT = '[DISCONNECT]',
 }
 
 export enum BakoSafeUsernames {
@@ -50,6 +53,7 @@ export interface ISocketMessage<T> {
 export interface ICreateClientSocket {
   sessionId: string;
   events: BakoSafeConnector;
+  onConnectStateChange: (state: boolean) => void;
 }
 
 export interface IRequestTxPending {

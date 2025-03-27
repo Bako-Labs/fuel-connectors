@@ -5,45 +5,35 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.94.8
-  Forc version: 0.63.6
-  Fuel-Core version: 0.35.0
+  Fuels version: 0.100.0
+  Forc version: 0.66.5
+  Fuel-Core version: 0.40.2
 */
 
-import { Contract, ContractFactory, decompressBytecode } from "fuels";
-import type {
-  Provider,
-  Account,
-  DeployContractOptions,
-  DeployContractResult,
-} from "fuels";
+import { ContractFactory as __ContractFactory, decompressBytecode } from "fuels";
+import type { Provider, Account, DeployContractOptions } from "fuels";
 
 import { Counter } from "./Counter";
 
-const bytecode = decompressBytecode(
-  "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"
-);
+const bytecode = decompressBytecode("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");
 
-export class CounterFactory extends ContractFactory {
+export class CounterFactory extends __ContractFactory<Counter> {
+
   static readonly bytecode = bytecode;
 
   constructor(accountOrProvider: Account | Provider) {
-    super(bytecode, Counter.abi, accountOrProvider);
+    super(
+      bytecode,
+      Counter.abi,
+      accountOrProvider,
+      Counter.storageSlots
+    );
   }
 
-  deploy<TContract extends Contract = Contract>(
-    deployOptions?: DeployContractOptions
-  ): Promise<DeployContractResult<TContract>> {
-    return super.deploy({
-      storageSlots: Counter.storageSlots,
-      ...deployOptions,
-    });
-  }
-
-  static async deploy(
+  static deploy (
     wallet: Account,
     options: DeployContractOptions = {}
-  ): Promise<DeployContractResult<Counter>> {
+  ) {
     const factory = new CounterFactory(wallet);
     return factory.deploy(options);
   }

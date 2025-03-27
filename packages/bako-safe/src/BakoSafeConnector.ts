@@ -207,27 +207,41 @@ export class BakoSafeConnector extends FuelConnector {
       this.dAppWindow?.open('/dapp/transaction', reject);
       this.checkWindow();
 
+      const onClientConnected = () => {
+        this.socket?.server.emit(BakoSafeConnectorEvents.TX_PENDING, {
+          _transaction,
+          _address,
+        });
+      };
+
+      // @ts-ignore
+      this.on(BakoSafeConnectorEvents.CLIENT_CONNECTED, onClientConnected);
+
       this.once(BakoSafeConnectorEvents.CLIENT_DISCONNECTED, () => {
         this.dAppWindow?.close();
+        this.removeListener(
+          BakoSafeConnectorEvents.CLIENT_CONNECTED,
+          onClientConnected,
+        );
         reject(new Error('Client disconnected'));
       });
 
       this.once(BakoSafeConnectorEvents.TX_TIMEOUT, () => {
         this.dAppWindow?.close();
+        this.removeListener(
+          BakoSafeConnectorEvents.CLIENT_CONNECTED,
+          onClientConnected,
+        );
         reject(new Error('Transaction timeout'));
-      });
-
-      // @ts-ignore
-      this.on(BakoSafeConnectorEvents.CLIENT_CONNECTED, () => {
-        this.socket?.server.emit(BakoSafeConnectorEvents.TX_PENDING, {
-          _transaction,
-          _address,
-        });
       });
 
       this.once(
         BakoSafeConnectorEvents.TX_CONFIRMED,
         ({ data }: { data: IResponseTxCofirmed }) => {
+          this.removeListener(
+            BakoSafeConnectorEvents.CLIENT_CONNECTED,
+            onClientConnected,
+          );
           resolve(`0x${data.id}`);
         },
       );

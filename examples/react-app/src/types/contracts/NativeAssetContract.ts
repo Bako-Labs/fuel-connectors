@@ -5,17 +5,17 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.94.8
-  Forc version: 0.63.6
-  Fuel-Core version: 0.35.0
+  Fuels version: 0.100.0
+  Forc version: 0.66.5
+  Fuel-Core version: 0.40.2
 */
 
-import { Contract, Interface } from "fuels";
+import { Contract as __Contract, Interface } from "fuels";
 import type {
   Provider,
   Account,
   StorageSlot,
-  AbstractAddress,
+  Address,
   BigNumberish,
   BN,
   Bytes,
@@ -2266,7 +2266,7 @@ const abi = {
     {
       "name": "MAX_SUPPLY",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 27192
+      "offset": 27144
     }
   ]
 };
@@ -2297,7 +2297,7 @@ export class NativeAssetContractInterface extends Interface {
   };
 }
 
-export class NativeAssetContract extends Contract {
+export class NativeAssetContract extends __Contract {
   static readonly abi = abi;
   static readonly storageSlots = storageSlots;
 
@@ -2316,7 +2316,7 @@ export class NativeAssetContract extends Contract {
   };
 
   constructor(
-    id: string | AbstractAddress,
+    id: string | Address,
     accountOrProvider: Account | Provider,
   ) {
     super(id, abi, accountOrProvider);

@@ -5,13 +5,13 @@ import { Counter } from '../types';
 
 import type { CustomError } from '../utils/customError';
 
+import { CHAIN_IDS } from 'fuels';
 import { COUNTER_CONTRACT_ID, DEFAULT_AMOUNT } from '../config';
 import { EXPLORER_URL } from '../config';
 import Button from './button';
 import ContractLink from './contract-link';
 import Feature from './feature';
 import Notification, { type Props as NotificationProps } from './notification';
-import {CHAIN_IDS} from "fuels";
 
 interface Props {
   isSigning: boolean;
@@ -19,9 +19,11 @@ interface Props {
 }
 
 const contract_id = {
-  [CHAIN_IDS.fuel.testnet]: '0x32a71b9b4b8a3ea8ba5a551b494ef7df5ed2d238c25e5f8129d1343df1ee71f5',
-  [CHAIN_IDS.fuel.mainnet]: '0x906549b37eaeedf722c78cabf251af5c39f59624d41305dae49c6c790baa8521',
-}
+  [CHAIN_IDS.fuel.testnet]:
+    '0x7ba49998f7dd0a97e1be8d108f2d6a83765abfb107f84a35ab0fcf12382fa67b',
+  [CHAIN_IDS.fuel.mainnet]:
+    '0x111f1359fa87c260d1509ca7834091202d2f115e08141eecb5230fd3b47f37a0',
+};
 
 export default function ContractCounter({ isSigning, setIsSigning }: Props) {
   const { balance, wallet, refetchBalance } = useWallet();
@@ -70,7 +72,10 @@ export default function ContractCounter({ isSigning, setIsSigning }: Props) {
     if (wallet) {
       setLoading(true);
       setIsSigning(true);
-      const contract = new Counter(contract_id[wallet.provider.getChainId()], wallet);
+      const contract = new Counter(
+        contract_id[await wallet.provider.getChainId()],
+        wallet,
+      );
       try {
         const { waitForResult } = await contract.functions
           .increment_counter()
@@ -135,7 +140,10 @@ export default function ContractCounter({ isSigning, setIsSigning }: Props) {
   async function getCount() {
     if (!wallet) return;
 
-    const counterContract = new Counter(COUNTER_CONTRACT_ID, wallet);
+    const counterContract = new Counter(
+      contract_id[await wallet.provider.getChainId()],
+      wallet,
+    );
 
     try {
       const { value } = await counterContract.functions

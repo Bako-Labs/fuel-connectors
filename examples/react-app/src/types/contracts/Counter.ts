@@ -5,71 +5,73 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.94.8
-  Forc version: 0.63.6
-  Fuel-Core version: 0.35.0
+  Fuels version: 0.100.0
+  Forc version: 0.66.5
+  Fuel-Core version: 0.40.2
 */
 
-import { Contract, Interface } from "fuels";
+import { Contract as __Contract, Interface } from "fuels";
 import type {
   Provider,
   Account,
   StorageSlot,
-  AbstractAddress,
+  Address,
   BigNumberish,
   BN,
   FunctionFragment,
   InvokeFunction,
-} from "fuels";
+} from 'fuels';
 
 const abi = {
-  programType: "contract",
-  specVersion: "1",
-  encodingVersion: "1",
-  concreteTypes: [
+  "programType": "contract",
+  "specVersion": "1",
+  "encodingVersion": "1",
+  "concreteTypes": [
     {
-      type: "u64",
-      concreteTypeId:
-        "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-    },
+      "type": "u64",
+      "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+    }
   ],
-  metadataTypes: [],
-  functions: [
+  "metadataTypes": [],
+  "functions": [
     {
-      inputs: [],
-      name: "get_count",
-      output:
-        "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      attributes: [
+      "inputs": [],
+      "name": "get_count",
+      "output": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+      "attributes": [
         {
-          name: "storage",
-          arguments: ["read"],
-        },
-      ],
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
     },
     {
-      inputs: [],
-      name: "increment_counter",
-      output:
-        "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      attributes: [
+      "inputs": [],
+      "name": "increment_counter",
+      "output": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
+      "attributes": [
         {
-          name: "storage",
-          arguments: ["read", "write"],
-        },
-      ],
-    },
+          "name": "storage",
+          "arguments": [
+            "read",
+            "write"
+          ]
+        }
+      ]
+    }
   ],
-  loggedTypes: [],
-  messagesTypes: [],
-  configurables: [],
+  "loggedTypes": [],
+  "messagesTypes": [],
+  "configurables": []
 };
 
 const storageSlots: StorageSlot[] = [
   {
-    key: "6e3c7b4f69bbff7132c3c3a62883a6868f47b0bc2a7f21605f29038cd9a5e05f",
-    value: "0000000000000000000000000000000000000000000000000000000000000000",
-  },
+    "key": "6e3c7b4f69bbff7132c3c3a62883a6868f47b0bc2a7f21605f29038cd9a5e05f",
+    "value": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
 ];
 
 export class CounterInterface extends Interface {
@@ -83,7 +85,7 @@ export class CounterInterface extends Interface {
   };
 }
 
-export class Counter extends Contract {
+export class Counter extends __Contract {
   static readonly abi = abi;
   static readonly storageSlots = storageSlots;
 
@@ -94,8 +96,8 @@ export class Counter extends Contract {
   };
 
   constructor(
-    id: string | AbstractAddress,
-    accountOrProvider: Account | Provider
+    id: string | Address,
+    accountOrProvider: Account | Provider,
   ) {
     super(id, abi, accountOrProvider);
   }

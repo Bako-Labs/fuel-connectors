@@ -15,6 +15,10 @@ export enum BakoSafeConnectorEvents {
   TX_CONFIRMED = '[TX_EVENT_CONFIRMED]',
   TX_TIMEOUT = '[TX_EVENT_TIMEOUT]',
 
+  //switchNetwork
+  CHANGE_NETWORK = '[CHANGE_NETWORK]',
+  NETWORK_CHANGED = '[NETWORK_CHANGED]',
+
   //auth
   AUTH_CONFIRMED = '[AUTH_CONFIRMED]',
 

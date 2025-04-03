@@ -248,6 +248,51 @@ export class BakoSafeConnector extends FuelConnector {
     });
   }
 
+  async selectNetwork(_network: Network): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.dAppWindow?.open('/dapp/network', reject);
+      this.checkWindow();
+    
+      const onClientConnected = () => {
+        this.socket?.server.emit(
+          BakoSafeConnectorEvents.CHANGE_NETWORK, {
+            _network,
+          }  
+        );
+      };
+    
+      // @ts-ignore
+      this.on(BakoSafeConnectorEvents.CLIENT_CONNECTED, onClientConnected);
+    
+      this.once(BakoSafeConnectorEvents.CLIENT_DISCONNECTED, () => {
+        this.dAppWindow?.close();
+        this.removeListener(
+          BakoSafeConnectorEvents.CLIENT_CONNECTED,
+          onClientConnected,
+        );
+        reject(new Error('Client disconnected'));
+      });
+    
+      this.once(
+        BakoSafeConnectorEvents.NETWORK_CHANGED,
+        async () => {
+          const network = await this.currentNetwork();
+
+          this.emit(this.events.networks, [network]);
+          this.emit(this.events.currentNetwork, network);
+          
+          this.dAppWindow?.close();
+          this.removeListener(
+            BakoSafeConnectorEvents.CLIENT_CONNECTED,
+            onClientConnected,
+          );
+
+          resolve(true);
+        },
+      );
+    });
+  }
+
   async ping() {
     if (IS_SAFARI) {
       return false;
@@ -325,10 +370,6 @@ export class BakoSafeConnector extends FuelConnector {
   }
 
   async addNetwork(_networkUrl: string): Promise<boolean> {
-    throw new Error('Method not implemented.');
-  }
-
-  async selectNetwork(_network: SelectNetworkArguments): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
 

@@ -10,8 +10,7 @@ import Balance from './components/balance';
 import Counter from './components/counter';
 import Transfer from './components/transfer';
 
-import WalletHashingTest from './components/WalletHashingTest';
-import Sign from './components/sign';
+import { Network } from './components/network.tsx';
 import { useWallet } from './hooks/useWallet';
 
 export default function App() {
@@ -113,6 +112,7 @@ export default function App() {
 
                   {isConnected && !isLoading && (
                     <section className="flex h-full flex-col justify-center space-y-6 px-4 py-8 sm:px-8 sm:py-8 md:px-10 md:py-12">
+                      <Network />
                       <Account
                         isSigning={isSigning}
                         setIsSigning={setIsSigning}
@@ -126,11 +126,6 @@ export default function App() {
                         setIsSigning={setIsSigning}
                       />
                       <Transfer
-                        isSigning={isSigning}
-                        setIsSigning={setIsSigning}
-                      />
-                      <Sign isSigning={isSigning} setIsSigning={setIsSigning} />
-                      <WalletHashingTest
                         isSigning={isSigning}
                         setIsSigning={setIsSigning}
                       />

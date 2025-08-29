@@ -116,9 +116,7 @@ const config = {
   counterContractId: getContractId(),
   chainIdName: import.meta.env
     .VITE_CHAIN_ID_NAME as keyof typeof CHAIN_IDS.fuel,
-  defaultAmount: bn.parseUnits(
-    CHAIN_ID_NAME === 'mainnet' ? '0.000000001' : '0.0001',
-  ),
+  defaultAmount: bn.parseUnits('0.000000001'),
 };
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

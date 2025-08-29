@@ -74,6 +74,10 @@ const NETWORKS: NetworkConfig[] = [
     chainId: CHAIN_ID,
     url: PROVIDER_URL,
   },
+  {
+    chainId: 9889,
+    url: 'https://mainnet.fuel.network/v1/graphql',
+  },
 ];
 
 const FUEL_CONFIG: FuelConfig = {
